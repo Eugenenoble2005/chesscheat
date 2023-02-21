@@ -6,20 +6,22 @@ function main()
         return {status:"false",error:"Cannot start chess cheat service. Please ensure you are in a game before attempting to start the service."}
     }
     //if game is being played, continue execution.
-    //attempt to get color user is playing as.
-    var isWhite = prompt("Are you playing as white?, answer yes or no?")
-    if(isWhite.toLowerCase() == "yes"){
-        player_side = "white"
-    }
-    else{
-        player_side = "black"
-    }
-    const engine = new Worker("https://www.chess.com/bundles/app/js/engine/stockfish-single.830cf9cc.js")
-    console.log(engine.postMessage('ucinewgame'));
-    engine.onmessage = function(event){
-        console.log(event)
-    }
-    return {status:true,"player_side":player_side}
+    //generate fen string from board
+    
+
+
+
+    // const engine = new Worker("/bundles/app/js/vendor/jschessengine/stockfish.asm.1abfa10c.js")
+    // engine.postMessage('ucinewgame');
+    // engine.postMessage('go movetime 1000');
+    // engine.onmessage = function(event){
+    //     const message = event.data;
+    //     if (message.startsWith('bestmove')) {
+    //         const bestMove = message.split(' ')[1];
+    //         console.log(`The next best move is ${bestMove}`);
+    //     }
+    // }
+    return {status:true}
     
 }
 function startHack(element)
@@ -29,7 +31,7 @@ function startHack(element)
         //wait until chessboard content is probably loaded
         let hack = main()
         if(hack.status == true){
-            element.innerHTML = `Hack running... Playing as ${hack.player_side}....`
+            element.innerHTML = `Hack running`
         }
         else{
             element.innerHTML = "Start Hack"
@@ -39,7 +41,7 @@ function startHack(element)
 }
 var button = document.createElement("button");
 button.className = "ui_v5-button-component ui_v5-button-primary ui_v5-button-large ui_v5-button-full"
-button.innerHTML = "Start Hack"
+button.innerHTML = "Start Hack. <b>ONLY START AT BEGINNING OF GAME</b>"
 //start hack when button is clicked
 button.onclick = ()=>{startHack(button)}
 let main_body = document.querySelector(".board-layout-main")
