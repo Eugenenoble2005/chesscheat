@@ -64,12 +64,11 @@ function main()
     engine.postMessage(`position fen ${fen_string}`)
     engine.postMessage('go wtime 300000 btime 300000 winc 2000 binc 2000');
     engine.postMessage("go debth 30")
-    step = 
+    
     setInterval(()=>{
         let new_fen_string = getFenString()
         new_fen_string += ` ${player_colour}`
         if(new_fen_string != fen_string){
-            step = !step
             fen_string = new_fen_string
             engine.postMessage(`position fen ${fen_string}`)
             engine.postMessage('go wtime 300000 btime 300000 winc 2000 binc 2000');
@@ -81,6 +80,7 @@ function main()
             const bestMove = event.data.split(' ')[1];
             // Use the best move in your application
             console.log('Best move:', bestMove);
+            document.getElementById("best-move").innerHTML = `Bestmove is ${bestMove}`
           }
     }
     //listen for new moves
@@ -94,7 +94,7 @@ function startHack(element)
         //wait until chessboard content is probably loaded
         let hack = main()
         if(hack.status == true){
-            element.innerHTML = `Hack running`
+            element.innerHTML = `Hack running. <span id = 'best-move'></span>`
         }
         else{
             element.innerHTML = "Start Hack"
