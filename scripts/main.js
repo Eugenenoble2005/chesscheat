@@ -5,9 +5,15 @@ function main()
     if(chessboard == null || !chessboard){
         return {status:"false",error:"Cannot start chess cheat service. Please ensure you are in a game before attempting to start the service."}
     }
-    //if game is being played, continue execution.
-    var turn_to_move = confirm("Is it white's turn to move?")
-    var turn_to_move  = turn_to_move ? "w" : "b"
+    var turn_to_move = confirm("Is it your turn to move?, You must only start the cheat service when it is your turn to move")
+    if(!turn_to_move){
+        return {status:false,"error":"Turn not"}
+    }
+    var player_colour = prompt("Are you playing as white or black?")
+    while(player_colour != "white" && player_colour !="black"){
+        player_colour = prompt("Are you playing as white or black?")
+    }
+    player_colour = player_colour.split("")[0]
     //generate FEN string from board,
     let fen_string = ""
     for(var i =8;i>=1;i--){
@@ -17,7 +23,16 @@ function main()
             if(j == 1 && i != 8){
                 fen_string+= "/"
             }
-            let piece_in_position = document.querySelectorAll(`.piece.square-${position}`)[0]?.classList[1] ?? null
+            let piece_in_position = document.querySelectorAll(`.piece.square-${position}`)[0]?.classList ?? null
+            //get piece name by shorted class
+            if(piece_in_position != null){
+                for(var item of piece_in_position.values()){
+                    if(item.length == 2){
+                        piece_in_position = item
+                    }
+                }
+            }
+            console.log(piece_in_position)
             //if position is empty
             if(piece_in_position == null){
                 //if previous position is empty, sum up numbers
@@ -40,10 +55,10 @@ function main()
             else if(piece_in_position?.split("")[0] == "w"){
                 fen_string+=piece_in_position.split("")[1].toUpperCase()
             }
-            console.log(piece_in_position)
+        
         }
     }
-    fen_string += ` ${turn_to_move}`
+    fen_string += ` ${player_colour}`
     console.log(fen_string)
     const engine = new Worker("/bundles/app/js/vendor/jschessengine/stockfish.asm.1abfa10c.js")
     engine.postMessage(`position fen ${fen_string}`)
@@ -56,9 +71,26 @@ function main()
             console.log('Best move:', bestMove);
           }
     }
-    engine.onerror = function(error){
-        console.log(error)
+    //listen for new moves
+    const targetNode = document.querySelector(".piece")
+    const config = { attributes: true, childList: true, subtree: true };
+    // Callback function to execute when mutations are observed
+    const callback = (mutationList, observer) => {
+    for (const mutation of mutationList) {
+        if (mutation.type === 'childList') {
+        console.log('A child node has been added or removed.');
+        } else if (mutation.type === 'attributes') {
+        console.log(`The ${mutation.attributeName} attribute was modified.`);
+        }
     }
+    };
+
+    // Create an observer instance linked to the callback function
+    const observer = new MutationObserver(callback);
+
+    // Start observing the target node for configured mutations
+    observer.observe(targetNode, config);
+    observer.disconnect();
     return {status:true}
     
 }
