@@ -64,7 +64,7 @@ function main()
     engine.postMessage(`position fen ${fen_string}`)
     engine.postMessage('go wtime 300000 btime 300000 winc 2000 binc 2000');
     engine.postMessage("go debth 30")
-    //listen for when moves are made
+    //listen for when moves are made 
     setInterval(()=>{
         let new_fen_string = getFenString()
         new_fen_string += ` ${player_colour}`
@@ -79,8 +79,27 @@ function main()
         if (event.data.startsWith('bestmove')) {
             const bestMove = event.data.split(' ')[1];
             // Use the best move in your application
+            char_map = {"a":1,"b":2,"c":3,"d":4,"e":5,"f":6,"g":7,"h":8}
             console.log('Best move:', bestMove);
             document.getElementById("best-move").innerHTML = ` Bestmove is ${bestMove}`
+            //create cheat squares on the board
+            previous_cheat_squares = document.querySelectorAll(".cheat-highlight").forEach((element)=>{
+                //remove all previous cheat squares
+                element.remove()
+            })
+            bestMove_array = bestMove.split("")
+            initial_position = `${char_map[bestMove_array[0]]}${bestMove_array[1]}`
+            final_position = `${char_map[bestMove_array[2]]}${bestMove_array[3]}`
+            
+            initial_highlight = document.createElement("div");
+            initial_highlight.className = `highlight cheat-highlight square-${initial_position}`
+            initial_highlight.style = "background:red;opacity:0.5"
+
+            final_highlight = document.createElement("div");
+            final_highlight.className = `highlight cheat-highlight square-${final_position}`
+            final_highlight.style = "background:red;opacity:0.5"
+            document.querySelector("chess-board").appendChild(initial_highlight)
+            document.querySelector("chess-board").appendChild(final_highlight)
           }
     }
     //listen for new moves
