@@ -13,12 +13,15 @@ function main()
     for(var i =8;i>=1;i--){
         for(var j=1;j<=8;j++){
             let position = `${j}${i}`
+            //for every new row on the chessboard
             if(j == 1 && i != 8){
                 fen_string+= "/"
             }
             let piece_in_position = document.querySelectorAll(`.piece.square-${position}`)[0]?.classList[1] ?? null
+            //if position is empty
             if(piece_in_position == null){
-                previous_char = fen_string.split("").pop()
+                //if previous position is empty, sum up numbers
+                let previous_char = fen_string.split("").pop()
                 if(!isNaN(Number(previous_char))){
                     fen_string = fen_string.substring(0,fen_string.length-1)
                     fen_string += Number(previous_char)+1
@@ -27,20 +30,25 @@ function main()
                     fen_string+="1"
                 }
             }
+            else if(piece_in_position.length !=2){
+                //sometimes the position of the chess piece class changes. 
+                piece_in_position = document.querySelectorAll(`.piece.square-${position}`)[0]?.classList[2] ?? null
+            }
             else if(piece_in_position?.split("")[0] == "b"){
                 fen_string+=piece_in_position.split("")[1]
             }
             else if(piece_in_position?.split("")[0] == "w"){
                 fen_string+=piece_in_position.split("")[1].toUpperCase()
             }
+            console.log(piece_in_position)
         }
     }
     fen_string += ` ${turn_to_move}`
     console.log(fen_string)
     const engine = new Worker("/bundles/app/js/vendor/jschessengine/stockfish.asm.1abfa10c.js")
     engine.postMessage(`position fen ${fen_string}`)
+    engine.postMessage('go wtime 300000 btime 300000 winc 2000 binc 2000');
     engine.postMessage("go debth 30")
-    stockfish.postMessage('go wtime 300000 btime 300000 winc 2000 binc 2000');
     engine.onmessage = function(event){
         if (event.data.startsWith('bestmove')) {
             const bestMove = event.data.split(' ')[1];
