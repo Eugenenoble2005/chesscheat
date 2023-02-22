@@ -24,7 +24,7 @@ function main()
                 fen_string+= "/"
             }
             let piece_in_position = document.querySelectorAll(`.piece.square-${position}`)[0]?.classList ?? null
-            //get piece name by shorted class
+            //get piece name by shortest class
             if(piece_in_position != null){
                 for(var item of piece_in_position.values()){
                     if(item.length == 2){
@@ -44,10 +44,6 @@ function main()
                 else{
                     fen_string+="1"
                 }
-            }
-            else if(piece_in_position.length !=2){
-                //sometimes the position of the chess piece class changes. 
-                piece_in_position = document.querySelectorAll(`.piece.square-${position}`)[0]?.classList[2] ?? null
             }
             else if(piece_in_position?.split("")[0] == "b"){
                 fen_string+=piece_in_position.split("")[1]
