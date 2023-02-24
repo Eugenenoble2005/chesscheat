@@ -3,6 +3,6 @@
 <i>Note: this project was developed for learning purposes, I do not condone or encourage cheating in games and this project should help you get better at chess. Non fair play might result in your chess.com account being suspended if you do not use wisely. </>
 <br>
 <video width="100%" height="500" controls>
-  <source src="https://vimeo.com/801949913" type="video/mp4">
+  <source src="https://user-images.githubusercontent.com/71329328/221186466-4b62380f-8370-4a56-b72a-d2515666f482.mp4">
 Your browser does not support the video tag.
 </video>
