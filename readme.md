@@ -2,4 +2,7 @@
 <p>Chess cheat utilizes the stockfish engine and the power of your computer to show you the best move to make in any chess.com game. It guarantees you wins in atleast 90% of games you play and can greatly help you improve your chess skills.<br>
 <i>Note: this project was developed for learning purposes, I do not condone or encourage cheating in games and this project should help you get better at chess. Non fair play might result in your chess.com account being suspended if you do not use wisely. </>
 <br>
-<div style="padding:56.22% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/801949913?h=a8dd49b5fb&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="chesscheat.mp4"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+<video width="100%" height="500" controls>
+  <source src="https://vimeo.com/801949913" type="video/mp4">
+Your browser does not support the video tag.
+</video>
