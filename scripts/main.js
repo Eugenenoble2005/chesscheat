@@ -5,10 +5,6 @@ function main()
     if(chessboard == null || !chessboard){
         return {status:"false",error:"Cannot start chess cheat service. Please ensure you are in a game before attempting to start the service."}
     }
-    var turn_to_move = confirm("Is it your turn to move?, You must only start the cheat service when it is your turn to move")
-    if(!turn_to_move){
-        return {status:false,"error":"Turn not"}
-    }
     var player_colour = prompt("Are you playing as white or black?")
     while(player_colour != "white" && player_colour !="black"){
         player_colour = prompt("Are you playing as white or black?")
