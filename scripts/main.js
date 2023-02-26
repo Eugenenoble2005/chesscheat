@@ -59,7 +59,7 @@ function main()
     const engine = new Worker("/bundles/app/js/vendor/jschessengine/stockfish.asm.1abfa10c.js")
     engine.postMessage(`position fen ${fen_string}`)
     engine.postMessage('go wtime 300000 btime 300000 winc 2000 binc 2000');
-    engine.postMessage("go debth 30")
+    engine.postMessage("go debth 99")
     //listen for when moves are made 
     setInterval(()=>{
         let new_fen_string = getFenString()
@@ -68,7 +68,7 @@ function main()
             fen_string = new_fen_string
             engine.postMessage(`position fen ${fen_string}`)
             engine.postMessage('go wtime 300000 btime 300000 winc 2000 binc 2000');
-            engine.postMessage("go debth 30")
+            engine.postMessage("go debth 99")
         }
     })
     engine.onmessage = function(event){
