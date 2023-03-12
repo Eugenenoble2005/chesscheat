@@ -5,6 +5,11 @@
   "icons": { "16": "icon.png",
   "48": "icon.png",
  "128": "icon.png" },
+ "browser_specific_settings": {
+  "gecko": {
+    "id": "chesscheatextension@gmail.com"
+  }
+},
   "description": "Always see the optimal move in any chess.com game. Guarantees wins almost 100% of the time",
   "content_scripts": [
     {
