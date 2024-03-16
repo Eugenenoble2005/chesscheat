@@ -1,7 +1,10 @@
 function main()
 {
     //check if game is being played
-    let chessboard = document.querySelector("chess-board");
+    const boardElement = document.querySelector('.board');
+    //i dont really know why i chose to lookup the board using the tagName instead of the classname when they are probably always going to be the same.
+    const elementName = boardElement.tagName;
+    let chessboard = document.querySelector(elementName);
     if(chessboard == null || !chessboard){
         return {status:"false",error:"Cannot start chess cheat service. Please ensure you are in a game before attempting to start the service."}
     }
@@ -94,8 +97,8 @@ function main()
             final_highlight = document.createElement("div");
             final_highlight.className = `highlight cheat-highlight square-${final_position}`
             final_highlight.style = "background:red;opacity:0.5"
-            document.querySelector("chess-board").appendChild(initial_highlight)
-            document.querySelector("chess-board").appendChild(final_highlight)
+            document.querySelector("wc-chess-board").appendChild(initial_highlight)
+            document.querySelector("wc-chess-board").appendChild(final_highlight)
           }
     }
     //listen for new moves
