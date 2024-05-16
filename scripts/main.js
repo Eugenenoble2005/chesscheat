@@ -1,3 +1,5 @@
+//this is quite possibly the most disgusting piece of code i've ever written.
+var hackRunning = false;
 function main()
 {
     //check if game is being played
@@ -64,7 +66,7 @@ function main()
     engine.postMessage('go wtime 300000 btime 300000 winc 2000 binc 2000');
     engine.postMessage("go debth 99")
     //listen for when moves are made 
-    setInterval(()=>{
+  var getPlays = setInterval(()=>{
         let new_fen_string = getFenString()
         new_fen_string += ` ${player_colour}`
         if(new_fen_string != fen_string){
@@ -80,7 +82,7 @@ function main()
             // Use the best move in your application
             char_map = {"a":1,"b":2,"c":3,"d":4,"e":5,"f":6,"g":7,"h":8}
             console.log('Best move:', bestMove);
-            document.getElementById("best-move").innerHTML = ` Bestmove is ${bestMove}`
+            document.getElementById("best-move").innerHTML = ` Bestmove is ${bestMove}. Tap to stop`
             //create cheat squares on the board
             previous_cheat_squares = document.querySelectorAll(".cheat-highlight").forEach((element)=>{
                 //remove all previous cheat squares
@@ -101,18 +103,41 @@ function main()
             document.querySelector("wc-chess-board").appendChild(final_highlight)
           }
     }
-    //listen for new moves
+    //try to stop hack
+    document.getElementById("hack_button").onclick = ()=>{
+        if(hackRunning == false){
+            startHack(document.getElementById("hack_button"));
+            return;
+        }
+        //stop listening for moves effectively stoping stockfish
+        clearInterval(getPlays);
+        //delete all cheat squares
+        document.querySelectorAll(".cheat-highlight").forEach((element)=>{
+            element.remove();
+        });
+        //set hackRunning to false;
+        hackRunning = false;
+        document.getElementById("hack_button").innerHTML = "Start Hack Again";
+        return {status:"false"}
+
+    }
     return {status:true}
     
 }
 function startHack(element)
 {
+    console.log(hackRunning);
+    if(hackRunning == true){
+        return;
+    }
+    hackRunning = true;
     element.innerHTML = "Please Wait.."
     element.disabled = true
         //wait until chessboard content is probably loaded
         let hack = main()
         if(hack.status == true){
-            element.innerHTML = `Hack running. <span id = 'best-move'>Calculating Best move..</span>`
+            element.disabled = false;
+            element.innerHTML = `Hack running. <span id = 'best-move'>Calculating Best move. Tap to stop</span>`
         }
         else{
             element.innerHTML = "Start Hack"
@@ -124,6 +149,7 @@ var button = document.createElement("button");
 button.className = "ui_v5-button-component ui_v5-button-primary ui_v5-button-large ui_v5-button-full"
 button.innerHTML = "Start Hack"
 //start hack when button is clicked
+button.id = "hack_button";
 button.onclick = ()=>{startHack(button)}
 let main_body = document.querySelector(".board-layout-main")
 main_body.prepend(button)
