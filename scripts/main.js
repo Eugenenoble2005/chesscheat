@@ -61,10 +61,17 @@ function main()
     let fen_string = getFenString()
     fen_string += ` ${player_colour}`
     console.log(fen_string)
+    let depth="";
+    const userAgent = navigator.userAgent.toLowerCase();
+    if(userAgent.includes("mobile"))
+        depth="14";
+    else
+        depth="30";
+    
     const engine = new Worker("/bundles/app/js/vendor/jschessengine/stockfish.asm.1abfa10c.js")
     engine.postMessage(`position fen ${fen_string}`)
     engine.postMessage('go wtime 300000 btime 300000 winc 2000 binc 2000');
-    engine.postMessage("go debth 99")
+    engine.postMessage("go depth ${depth}")
     //listen for when moves are made 
   var getPlays = setInterval(()=>{
         let new_fen_string = getFenString()
@@ -73,7 +80,7 @@ function main()
             fen_string = new_fen_string
             engine.postMessage(`position fen ${fen_string}`)
             engine.postMessage('go wtime 300000 btime 300000 winc 2000 binc 2000');
-            engine.postMessage("go debth 99")
+            engine.postMessage("go depth ${depth}")
         }
     })
     engine.onmessage = function(event){
